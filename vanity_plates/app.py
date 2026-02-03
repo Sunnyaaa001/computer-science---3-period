@@ -27,11 +27,14 @@ def insert_license_plate():
     # check the first digit whether is 0
     for c in plate_number[2:]:
         if c.isdigit():
-            if c == '0':
-                 return jsonify({
+            if c == "0":
+                print(c)
+                return jsonify({
             "code":500,
             "msg":"Invalid"
             })
+            else:
+                break
         else:
             break
 
