@@ -1,0 +1,20 @@
+[project]
+name = "common-utils"
+version = "1.0"
+description = ""
+authors = [
+    {name = "Sunny Wang"}
+]
+requires-python = ">=3.10,<3.11"
+
+[tool.poetry.dependencies]
+python = "*"
+PyYAML = "*"
+redis = "*"
+sqlalchemy = "*"
+python-jose = "*"
+snowflake-id = "*"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

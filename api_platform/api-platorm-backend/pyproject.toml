@@ -1,0 +1,24 @@
+[project]
+name = "api-platorm-backend"
+version = "1.0"
+description = "personal project"
+authors = [
+    {name = "Sunny Wang"}
+]
+requires-python = ">=3.10,<3.11"
+
+[tool.poetry.dependencies]
+python = "3.10.1"
+fastapi = "0.128.0"
+pydantic = "2.12.5"
+redis = "7.1.0"
+python-jose = { version = "^3.4", extras = ["cryptography"] }
+sqlalchemy = "^2.0"
+asyncmy = "0.2.11"
+PyYAML = "6.0.3"
+snowflake-id = "1.0.2"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
