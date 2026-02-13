@@ -1,0 +1,13 @@
+app:
+  name: api_platorm_admin
+
+redis: 
+  host: 127.0.0.1
+  port: 6379
+  db: 1
+  password: 123456
+
+
+token:
+  secret_key: ZVO5cHxdQCQpEj0hwPkYQJ13SsYwCN5g4gCKGlpVoyw4MYE0ekAxYRXMZLdNaC-wrTssgSgUBBL_Ti_TMae6og
+  expire_time: 30

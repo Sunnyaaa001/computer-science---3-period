@@ -18,6 +18,8 @@ asyncmy = "0.2.11"
 PyYAML = "6.0.3"
 snowflake-id = "1.0.2"
 
+common = { path = "./common" } 
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

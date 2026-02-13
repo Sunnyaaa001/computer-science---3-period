@@ -1,5 +1,32 @@
 from typing import Any
 import redis.asyncio as redis
+from __future__ import annotations
+
+class Redis:
+    _instance : RedisClient | None = None
+
+    @classmethod
+    def get_instance(cls)->RedisClient:
+        if cls._instance is None:
+            raise RuntimeError("Redis doesn't initialize..")
+        return cls._instance
+    
+    @classmethod
+    async def initialize(cls,host:str = "localhost",port:int=6379,db:int = 0, password:str | None = None):
+        if cls._instance is None:
+            cls._instance = RedisClient(host=host,port=port,db=db,password=password)
+
+        if not await cls._instance.ping():
+            raise ConnectionError("Redis connection failed")
+
+    @classmethod
+    async def close(cls):
+        await cls._instance.close()    
+
+
+
+        
+
 
 class RedisClient:
 
@@ -26,3 +53,9 @@ class RedisClient:
     
     async def close(self):
         await self._client.close()
+
+    async def ping(self) -> bool:
+        try:
+            return await self._client.ping()
+        except redis.ConnectionError:
+            return False    

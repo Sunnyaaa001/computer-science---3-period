@@ -3,15 +3,26 @@ from jose import jwt,JWTError
 
 class TokenUtill:
 
-    def __init__(self,secret_key:str, algorithm: str = "HS256"):
-        self.secret_key = secret_key
-        self.algorithm = algorithm
+    _secrect_key : str | None = None
+    _algorithm: str = "HS256"
 
-    def create_token(self,payload:dict)-> str:
-        return jwt.encode(claims=payload,key=self.secret_key,algorithm=self.algorithm)
+    @classmethod
+    def init(cls,secret_key:str, algorithm: str = "HS256"):
+        cls._secret_key = secret_key
+        cls._algorithm = algorithm
+
+    @classmethod
+    def _check_init(cls):
+        if not cls._secret_key:
+            raise RuntimeError("TokenUtil not initialized")
+        
+    def create_token(cls,payload:dict)-> str:
+        cls._check_init()
+        return jwt.encode(claims=payload,key=cls._secret_key,algorithm=cls._algorithm)
     
-    def verify_token(self,token:str)-> dict:
+    def verify_token(cls,token:str)-> dict:
+        cls._check_init()
         try:
-            return jwt.decode(token=token,key=self.secret_key,algorithms=self.algorithm)
+            return jwt.decode(token=token,key=cls._secret_key,algorithms=cls._algorithm)
         except JWTError:
             return None
