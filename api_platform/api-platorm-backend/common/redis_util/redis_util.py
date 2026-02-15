@@ -39,8 +39,8 @@ class RedisClient:
             decode_responses=True
         )
 
-    async def set(self,key:str, value: Any, expire:int | None = None):
-        return await self._client.set(name=key,value=value,ex=expire)
+    async def set(self,key:str, value: Any, expire:int | None = None,nx:bool = False):
+        return await bool(self._client.set(name=key,value=value,ex=expire,nx=nx))
 
     async def get(self,key:str)->Any:
         return await self._client.get(name=key)
@@ -50,6 +50,12 @@ class RedisClient:
     
     async def exist(self,key:str)->bool:
         return await self._client.exists(key) > 0
+    
+    async def decrease(self,key:str, count:int = 1):
+        return await self._client.decrby(key,count)
+    
+    async def increase(self,key:str,count:int = 1):
+        return await self._client.incrby(key,count)
     
     async def close(self):
         await self._client.close()
