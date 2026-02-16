@@ -4,7 +4,7 @@ from typing import Any
 
 class ConfigReader:
     _instance = "ConfigReader" | None = None
-    _CONFIG_FILE = Path("config/application.yml")
+    _CONFIG_FILE = Path("resource/application.yml")
 
     def __new__(cls):
         if cls._instance is None:

@@ -11,3 +11,6 @@ redis:
 token:
   secret_key: ZVO5cHxdQCQpEj0hwPkYQJ13SsYwCN5g4gCKGlpVoyw4MYE0ekAxYRXMZLdNaC-wrTssgSgUBBL_Ti_TMae6og
   expire_time: 30
+
+snowflake:
+  instance: 1
