@@ -1,6 +1,7 @@
 from common.redis_util.redis_util import Redis
 from common.user.user_utils import get_current_user
 from functools import wraps
+from common.db.session import DB
 
 redis_client = Redis.get_instance()
 
@@ -37,6 +38,24 @@ def limitation():
             return func(*args,**kwargs)
         return wrapper
     return decorator
+
+
+def Transactional(func:callable):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        # get async session
+        async for session in DB.get_session():
+            try:
+                kwargs["session"] = session
+                result = await func(*args,**kwargs)
+                await session.commit()
+                return result
+            except Exception as e:
+                await session.rollback()
+                raise e
+    return wrapper        
+            
+
 
 # TODO: write Log decorators
 

@@ -14,3 +14,13 @@ token:
 
 snowflake:
   instance: 1
+
+database:
+  driver: mysql+asyncmy
+  ip: 127.0.0.1
+  port: 3306
+  db: api_platform
+  username: root
+  password: root
+  config:
+  sql_log: False
