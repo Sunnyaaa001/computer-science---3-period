@@ -206,27 +206,6 @@ files = [
 pycparser = {version = "*", markers = "implementation_name != \"PyPy\""}
 
 [[package]]
-name = "common"
-version = "1.0"
-description = ""
-optional = false
-python-versions = ">=3.10,<3.11"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-python-jose = "*"
-PyYAML = "*"
-redis = "*"
-snowflake-id = "*"
-sqlalchemy = "*"
-
-[package.source]
-type = "directory"
-url = "common"
-
-[[package]]
 name = "cryptography"
 version = "46.0.5"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -937,4 +916,4 @@ typing-extensions = ">=4.12.0"
 [metadata]
 lock-version = "2.1"
 python-versions = "3.10.1"
-content-hash = "7c7120b1d9bdc172307a7717b42db4c4bc7025f352d1ca947340ec49eba7000e"
+content-hash = "4a86bac4f4a06ce25285ff956a3df66c5109a40fc77065d93fe61394e3b942d2"
