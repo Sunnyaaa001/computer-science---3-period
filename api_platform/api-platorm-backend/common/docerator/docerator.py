@@ -54,8 +54,6 @@ def Transactional(func:callable):
                 await session.rollback()
                 raise e
     return wrapper        
-            
-
 
 # TODO: write Log decorators
 

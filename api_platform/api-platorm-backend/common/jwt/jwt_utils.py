@@ -15,11 +15,11 @@ class TokenUtill:
     def _check_init(cls):
         if not cls._secret_key:
             raise RuntimeError("TokenUtil not initialized")
-        
+    @classmethod    
     def create_token(cls,payload:dict)-> str:
         cls._check_init()
         return jwt.encode(claims=payload,key=cls._secret_key,algorithm=cls._algorithm)
-    
+    @classmethod
     def verify_token(cls,token:str)-> dict:
         cls._check_init()
         try:
