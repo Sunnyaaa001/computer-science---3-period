@@ -3,6 +3,7 @@ from typing import List, Dict, Optional
 from datetime import datetime
 
 class TaskInfoParam(BaseModel):
+    id:int = Field(description="primary id")
     task_name: str = Field(..., description="Name of the task")
     cron_expression: str = Field(..., description="Cron expression, e.g., '*/5 * * * *'")
     func_name: str = Field(..., description="Task execution function, format: module.func")
