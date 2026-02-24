@@ -80,3 +80,12 @@ async def stop(id:int,db:AsyncSession) ->ResponseResult:
     task.status = "0"
     APScheduler.pause_task(task_id= task.id)
     return ResponseResult.success(message="success!")
+
+
+async def execute_one_time(id:int, db:AsyncSession) -> ResponseResult:
+    #get task info
+    task = await db.scalar(select(SysTaskInfo).where(SysTaskInfo.id == id))
+    if not task:
+        raise BusinessException("Task not found!")
+    APScheduler.execute_once(task._dict())
+    return ResponseResult.success(message="success!")

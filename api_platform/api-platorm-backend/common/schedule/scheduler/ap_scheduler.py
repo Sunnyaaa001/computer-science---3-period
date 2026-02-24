@@ -2,6 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.triggers.cron import CronTrigger
 import threading
+from datetime import datetime
 
 class APScheduler:
     _instance:BackgroundScheduler = None
@@ -42,7 +43,7 @@ class APScheduler:
         if cls._instance:
            trigger = CronTrigger.from_crontab(task_info["trigger"])
            cls._instance.add_job(
-              func=task_info["func"],
+              func=task_info["func_name"],
               trigger=trigger,
               args=task_info.get("args", []),
               kwargs=task_info.get("kwargs", {}),
@@ -77,7 +78,21 @@ class APScheduler:
     @classmethod        
     def resume_all_tasks(cls):
         if cls._instance:
-           cls._instance.resume()            
+           cls._instance.resume()
+
+    @classmethod       
+    def execute_once(cls,task_info:dict):
+        if cls._instance:
+            cls._instance.add_job(
+              func=task_info["func_name"],
+              trigger="date",
+              run_date = datetime.now(),
+              args=task_info.get("args", []),
+              kwargs=task_info.get("kwargs", {}),
+              id=task_info.get("id")
+        )
+
+
 
 
 

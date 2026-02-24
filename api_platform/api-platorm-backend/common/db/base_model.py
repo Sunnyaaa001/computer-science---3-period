@@ -10,10 +10,6 @@ class Base(DeclarativeBase):
     id:Mapped[int] = mapped_column("id",BigInteger,nullable=False,primary_key=True,default = Snowflake.get_id)
     create_time:Mapped[datetime] = mapped_column("create_time",DateTime,nullable=False,default=func.now())
     update_time:Mapped[datetime] = mapped_column("update_time",DateTime,nullable=False)
-
-    @property
-    def id_str(self):
-        return str(self.id)
     
     def _dict(self,exclude:set = None):
         exclude = exclude or set()

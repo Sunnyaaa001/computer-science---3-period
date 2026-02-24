@@ -48,10 +48,6 @@ class BaseResponseBody(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
-
-    @field_serializer("id")
-    def serialize_id(self, v: int):
-        return str(v)
     
     def __init_subclass__(cls):
         super().__init_subclass__()
@@ -59,7 +55,6 @@ class BaseResponseBody(BaseModel):
         for name, field in cls.model_fields.items():
 
             ann = field.annotation
-
             if get_origin(ann) is Annotated:
                 _, *meta = get_args(ann)
 
@@ -73,7 +68,13 @@ class BaseResponseBody(BaseModel):
                             return v.strftime(fmt)
 
                         setattr(cls, f"_ser_{name}", ser)
-
+            elif field.annotation == int:
+                @field_serializer(name)
+                def ser_id(self, v):
+                    return str(v)
+                setattr(cls, f"_ser_{name}", ser_id)
+            
+                        
 
 
 class DateFormat:
