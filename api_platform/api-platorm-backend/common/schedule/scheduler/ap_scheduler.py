@@ -1,6 +1,8 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
+from apscheduler.events import EVENT_JOB_ERROR,EVENT_JOB_EXECUTED
 from apscheduler.triggers.cron import CronTrigger
+from common.schedule.listener.task_listener import job_listener
 import threading
 from datetime import datetime
 
@@ -91,6 +93,11 @@ class APScheduler:
               kwargs=task_info.get("kwargs", {}),
               id=task_info.get("id")
         )
+            
+    @classmethod        
+    def add_listener(cls):
+        if cls._instance:
+            cls._instance.add_listener(job_listener,EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)        
 
 
 

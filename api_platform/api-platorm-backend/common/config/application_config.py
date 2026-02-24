@@ -5,6 +5,7 @@ from common.config_read.config_read import ConfigReader
 from common.jwt.jwt_utils import TokenUtill
 from common.id_generator.id_util import Snowflake
 from common.db.session import DB
+from common.schedule.scheduler.ap_scheduler import APScheduler
 
 
 @asynccontextmanager
@@ -25,6 +26,8 @@ async def lifespan(app:FastAPI):
             username=config_data["database"]["username"],password=config_data["database"]["password"],
             config=config_data["database"]["config"],sql_log=bool(config_data["database"]["sql_log"]))
     print(f"{config_data['app']['name']} application started........")
+    #init APscheduler
+    APScheduler.init()
     yield
     Redis.get_instance().close()
     print(f"{config_data['app']['name']} application closed........")
