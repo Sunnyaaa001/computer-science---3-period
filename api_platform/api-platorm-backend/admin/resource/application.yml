@@ -25,3 +25,9 @@ database:
   password: root
   config:
   sql_log: False
+
+apscheduler:
+  pool: 5
+  coalesce: False
+  max_instance: 1
+  timezone: Europe/Amsterdam

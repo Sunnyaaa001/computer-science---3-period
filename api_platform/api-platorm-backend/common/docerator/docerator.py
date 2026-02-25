@@ -3,12 +3,11 @@ from common.user.user_utils import get_current_user
 from functools import wraps
 from common.db.session import DB
 
-redis_client = Redis.get_instance()
-
 def debounce(wait_time:int = 1):
     def decorator(func:callable):
         @wraps(func)
         async def wrapper(*args, **kwargs):
+            redis_client = Redis.get_instance()
             #get current user id
             user = get_current_user()
             if user is None:
@@ -29,6 +28,7 @@ def limitation():
     def decorator(func:callable):
         @wraps(func)
         async def wrapper(*args, **kwargs):
+            redis_client = Redis.get_instance()
             #combine the key
             key = f"limitation:{func.__module__}.{func.__name__}"
             if int(await redis_client.get(key=key)) <= 0 :

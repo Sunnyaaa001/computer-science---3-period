@@ -1,6 +1,6 @@
+from __future__ import annotations
 from typing import Any
 import redis.asyncio as redis
-from __future__ import annotations
 
 class Redis:
     _instance : RedisClient | None = None

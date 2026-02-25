@@ -1,7 +1,7 @@
+from __future__ import annotations
 from typing import TypeVar,Optional,Generic
 from typing import Type, Callable
 from pydantic import BaseModel
-from __future__ import annotations
 from pydantic.generics import GenericModel
 from pydantic import BaseModel,ConfigDict,field_serializer
 from datetime import datetime

@@ -7,7 +7,7 @@ import sys
 class DB:
     _instance = None
     _lock = Lock() #keep thread safe
-    _supported_drivers = {"sqlite", "mysql", "postgresql"}
+    _supported_drivers = {"sqlite", "mysql", "postgresql","mysql+asyncmy"}
 
     @classmethod
     def init(cls,database_driver:str,ip:str,port:int,db_name:str,username:str,password:str,config:str,sql_log:bool):
@@ -57,6 +57,6 @@ class DB:
             sys.exit(1)
 
     @classmethod
-    async def get_session(cls) -> AsyncGenerator[AsyncSession]:
+    async def get_session(cls) -> AsyncGenerator[AsyncSession,None]:
         async with cls._instance.SessionLocal() as session:
             yield session
