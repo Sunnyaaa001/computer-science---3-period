@@ -10,6 +10,9 @@ from sqlalchemy import select
 from common.jwt.jwt_utils import TokenUtill
 from common.exception.error.error_code import ErrorCode
 from datetime import datetime
+from common.user.user_utils import get_current_user,clear_current_user
+import json
+import uuid
 
 key = "sys_user_account"
 
@@ -48,11 +51,26 @@ async def sys_user_login(user:LoginUser,db:AsyncSession)->ResponseResult:
     info["id"] = current_user.id
     info["username"] = current_user.username
     info["avatar"] = current_user.avatar
-    token =  TokenUtill.create_token({"id":current_user.id})
+    info["signature"] = datetime.now().timestamp()
+    info["uuid"] = str(uuid.uuid4())
+    token = TokenUtill.create_token(info)
     # put token into redis
     user_info_key = f"user_token:{current_user.id}"
-    await redis_client.set(user_info_key,info,expire=TokenUtill._expire_time*60)
+    await redis_client.set(key = user_info_key,value = json.dumps(info),expire=TokenUtill._expire_time*60)
     token_dict = {
         "token":token
     }
     return ResponseResult.success(data=token_dict,message="login successfully!")
+
+
+async def user_logout() -> ResponseResult:
+    current_user = get_current_user()
+    redis_client = Redis.get_instance()
+    user_info_key = f"user_token:{current_user['id']}"
+    await redis_client.delete(key=user_info_key)
+    clear_current_user()
+    return ResponseResult.success(message="log out successfully!")
+
+async def user_profile()->ResponseResult[dict]:
+    user = get_current_user()
+    return ResponseResult.success(message="success!",data=user)

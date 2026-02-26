@@ -40,7 +40,7 @@ class RedisClient:
         )
 
     async def set(self,key:str, value: Any, expire:int | None = None,nx:bool = False):
-        return await bool(self._client.set(name=key,value=value,ex=expire,nx=nx))
+        return bool(await self._client.set(name=key,value=value,ex=expire,nx=nx))
 
     async def get(self,key:str)->Any:
         return await self._client.get(name=key)

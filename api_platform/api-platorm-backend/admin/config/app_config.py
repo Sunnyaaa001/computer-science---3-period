@@ -3,6 +3,7 @@ from common.config.application_config import create_lifespan
 from common.exception.handler.exception_handler import register_exception
 from common.router.router import include_scheduled_task_router
 from admin.controller.user_controller import router as user_router
+from common.filter.api_filter import APIFilter
 
 app = FastAPI(lifespan=create_lifespan("admin"))
 
@@ -11,3 +12,5 @@ register_exception(app=app)
 include_scheduled_task_router(app=app)
 
 app.include_router(user_router)
+
+app.add_middleware(APIFilter)

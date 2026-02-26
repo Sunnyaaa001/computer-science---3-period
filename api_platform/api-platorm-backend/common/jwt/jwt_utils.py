@@ -20,11 +20,13 @@ class TokenUtill:
     @classmethod    
     def create_token(cls,payload:dict)-> str:
         cls._check_init()
-        return jwt.encode(claims=payload,key=cls._secret_key,algorithm=cls._algorithm)
+        token=  jwt.encode(claims=payload,key=cls._secret_key,algorithm=cls._algorithm)
+        return f"Bearer {token}"
     @classmethod
     def verify_token(cls,token:str)-> dict:
         cls._check_init()
         try:
+            token = token.removeprefix("Bearer ").strip()
             return jwt.decode(token=token,key=cls._secret_key,algorithms=cls._algorithm)
         except JWTError:
             return None

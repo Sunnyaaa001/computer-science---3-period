@@ -3,7 +3,7 @@ from common.response.response_body import ResponseResult
 from fastapi.routing import APIRouter
 from fastapi import Depends
 from admin.request.user_request import UserParam,LoginUser
-from admin.service.user_service import sys_user_register,sys_user_login
+from admin.service.user_service import sys_user_register,sys_user_login,user_logout,user_profile
 
 
 router = APIRouter(prefix="/system/user")
@@ -15,3 +15,12 @@ async def register(user:UserParam) -> ResponseResult:
 @router.post("/login")
 async def login(login_user:LoginUser,db:AsyncSession = Depends(DB.get_session))-> ResponseResult:
     return await sys_user_login(user=login_user,db=db)
+
+
+@router.get("/logout")
+async def logout()->ResponseResult:
+    return await user_logout()
+
+@router.get("/profile")
+async def get_profile()->ResponseResult[dict]:
+    return await user_profile()
