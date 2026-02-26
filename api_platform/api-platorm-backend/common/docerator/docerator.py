@@ -44,14 +44,14 @@ def Transactional(func:callable):
     @wraps(func)
     async def wrapper(*args, **kwargs):
         # get async session
-        async for session in DB.get_session():
+        async for db in DB.get_session():
             try:
-                kwargs["session"] = session
+                kwargs["db"] = db
                 result = await func(*args,**kwargs)
-                await session.commit()
+                await db.commit()
                 return result
             except Exception as e:
-                await session.rollback()
+                await db.rollback()
                 raise e
     return wrapper        
 

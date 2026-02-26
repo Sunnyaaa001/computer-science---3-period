@@ -12,19 +12,9 @@ from sqlalchemy import select,func
 T = TypeVar("T")
 
 class ResponseResult(BaseModel,Generic[T]):
-
-    def __init__(self,code:int,message:str,data:Optional[T] = None):
-        self.code = code
-        self.message = message
-        self._data_type = None
-
-        if hasattr(self,"__orig_class__"):
-            self._data_type = self.__orig_class__.__args__[0]
-
-        if data is not None and self._data_type is not None and not isinstance(data,self._data_type):
-            raise TypeError(f"data must be of type {self._data_type}, got {type(data)}")
-          
-        self.data = data
+    code:int
+    data:Optional[T] = None
+    message:str = None
 
     @classmethod    
     def success(cls,code:int = 200 ,data:Optional[T] = None, message:str = "success!") -> ResponseResult[T]:    
@@ -36,9 +26,8 @@ class ResponseResult(BaseModel,Generic[T]):
     
     @classmethod
     def response(cls, code:int, message:str,data: Optional[T] = None) -> ResponseResult[T]:
-        return cls(code,data=data,message=message)
-
-
+        return cls(code=code,data=data,message=message)
+        
 
 class BaseResponseBody(BaseModel):
     id: int

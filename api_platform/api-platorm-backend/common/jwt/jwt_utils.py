@@ -5,11 +5,13 @@ class TokenUtill:
 
     _secrect_key : str | None = None
     _algorithm: str = "HS256"
+    _expire_time:int
 
     @classmethod
-    def init(cls,secret_key:str, algorithm: str = "HS256"):
+    def init(cls,secret_key:str, expire_time:int ,algorithm: str = "HS256",):
         cls._secret_key = secret_key
         cls._algorithm = algorithm
+        cls._expire_time = expire_time
 
     @classmethod
     def _check_init(cls):

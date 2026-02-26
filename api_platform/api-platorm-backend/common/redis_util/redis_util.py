@@ -64,4 +64,15 @@ class RedisClient:
         try:
             return await self._client.ping()
         except redis.ConnectionError:
-            return False    
+            return False 
+
+    async def add_set(self,key:str,value:str):
+        await self._client.sadd(key,value)
+
+    async def set_exist(self,key:str,value:str)->bool:
+        result =  await self._client.sismember(key,value)
+        return bool(result)
+
+    async def remove_item_set(self,key:str,value:str)->bool:
+        result =  await self._client.srem(key,value)
+        return bool(result)               

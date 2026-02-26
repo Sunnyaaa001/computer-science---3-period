@@ -20,7 +20,7 @@ def create_lifespan(module_name: str):
             password=config_data["redis"]["password"]
         )
 
-        TokenUtill.init(secret_key=config_data["token"]["secret_key"])
+        TokenUtill.init(secret_key=config_data["token"]["secret_key"],expire_time=config_data["token"]["expire_time"])
         Snowflake.init(instance=int(config_data["snowflake"]["instance"]))
         DB.init(
             database_driver=config_data["database"]["driver"],
