@@ -1,6 +1,5 @@
 from __future__ import annotations
-from typing import TypeVar,Optional,Generic
-from typing import Type, Callable
+from typing import TypeVar,Optional,Generic,Type, Callable,Any
 from pydantic import BaseModel
 from pydantic.generics import GenericModel
 from pydantic import BaseModel,ConfigDict,field_serializer
@@ -8,6 +7,8 @@ from datetime import datetime
 from typing_extensions import Annotated,get_args, get_origin
 from common.db.session import AsyncSession
 from sqlalchemy import select,func
+from common.id_generator.id_util import SnowFlakeID,PlainSerializer
+
 # define type variable
 T = TypeVar("T")
 
@@ -30,40 +31,32 @@ class ResponseResult(BaseModel,Generic[T]):
         
 
 class BaseResponseBody(BaseModel):
-    id: int
-    create_time:Annotated[datetime, DateFormat("%Y-%m-%d %H:%M:%S")]
-    update_time:Annotated[datetime, DateFormat("%Y-%m-%d %H:%M:%S")]
+    id: SnowFlakeID
+    create_time: Annotated[datetime, DateFormat("%Y-%m-%d %H:%M:%S")]
+    update_time: Annotated[datetime, DateFormat("%Y-%m-%d %H:%M:%S")]
 
-    model_config = ConfigDict(
-        from_attributes=True
-    )
-    
-    def __init_subclass__(cls):
-        super().__init_subclass__()
+    model_config = ConfigDict(from_attributes=True,populate_by_name=True,arbitrary_types_allowed=True)
 
-        for name, field in cls.model_fields.items():
-
-            ann = field.annotation
-            if get_origin(ann) is Annotated:
-                _, *meta = get_args(ann)
-
+    @field_serializer("*", mode="plain", when_used="always")
+    def serialize_special_types(self, v: Any, info):
+        field_info = self.model_fields.get(info.field_name)
+        if not field_info:
+            return v
+            
+        ann = field_info.annotation
+        if ann is SnowFlakeID or isinstance(v, SnowFlakeID):
+             return str(v)
+        
+        if isinstance(v, datetime):
+            origin = get_origin(ann)
+            if origin is Annotated:
+                meta = get_args(ann)
                 for m in meta:
                     if isinstance(m, DateFormat):
+                        return v.strftime(m.fmt)
+            return v.strftime("%Y-%m-%d %H:%M:%S")
 
-                        fmt = m.fmt
-
-                        @field_serializer(name)
-                        def ser(self, v, fmt=fmt):
-                            return v.strftime(fmt)
-
-                        setattr(cls, f"_ser_{name}", ser)
-            elif field.annotation == int:
-                @field_serializer(name)
-                def ser_id(self, v):
-                    return str(v)
-                setattr(cls, f"_ser_{name}", ser_id)
-            
-                        
+        return v                         
 
 
 class DateFormat:
@@ -108,3 +101,4 @@ async def paginate(db:AsyncSession,
         items=items
     )
 
+BaseResponseBody.model_rebuild() 

@@ -1,8 +1,9 @@
-from __future__ import annotations
-from common.response.response_body import BaseResponseBody
+from common.response.response_body import BaseResponseBody,Annotated
+from common.id_generator.id_util import SnowFlakeID
 
 class APICategoryResponse(BaseResponseBody):
-    id:int
-    parent_id:int
+    parent_id:SnowFlakeID
     category_name:str
     sort:int
+
+APICategoryResponse.model_rebuild()

@@ -1,6 +1,9 @@
 from snowflake import SnowflakeGenerator
 import threading
-from typing import Optional
+from typing import Optional,Any
+from pydantic_core import core_schema
+from pydantic import PlainSerializer,GetCoreSchemaHandler
+from pydantic_core import CoreSchema, core_schema
 
 class Snowflake:
 
@@ -19,5 +22,21 @@ class Snowflake:
 
     @classmethod
     def get_id(cls) -> int:
-        return next(cls._generator)      
+        return next(cls._generator)
+      
 
+class SnowFlakeID:
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        return core_schema.json_or_python_schema(
+            json_schema=core_schema.str_schema(),
+            python_schema=core_schema.union_schema([
+                core_schema.int_schema(),
+                core_schema.str_schema(),
+            ]),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                lambda v: str(v), when_used="always"
+            ),
+        )
