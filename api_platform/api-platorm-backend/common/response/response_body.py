@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TypeVar,Optional,Generic,Type, Callable,Any
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from pydantic.generics import GenericModel
 from pydantic import BaseModel,ConfigDict,field_serializer
 from datetime import datetime
@@ -11,6 +11,7 @@ from common.id_generator.id_util import SnowFlakeID,PlainSerializer
 
 # define type variable
 T = TypeVar("T")
+NODE = TypeVar("NODE",bound="Tree")
 
 class ResponseResult(BaseModel,Generic[T]):
     code:int
@@ -101,4 +102,28 @@ async def paginate(db:AsyncSession,
         items=items
     )
 
+class Tree(BaseResponseBody,Generic[NODE]):
+    parent_id:SnowFlakeID
+    children:list[NODE] = Field(default_factory=list)
+
+    @classmethod
+    def build_tree(cls:Type[NODE],data:list[NODE],root_id:Any=0,order_by:str="sort",reverse:bool=False)->list[NODE]:
+        node_list = [item for item in data if item.parent_id == root_id]
+        if len(node_list) != 0:
+            node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
+            for item in node_list:
+                cls._node_recursion(data_list=data,node=item,order_by=order_by,reverse=reverse)
+        return node_list
+    
+    @classmethod    
+    def _node_recursion(cls,data_list:list[NODE],node:Type[NODE],order_by:str,reverse:bool)->list[NODE]:
+        node_list = [item for item in data_list if item.parent_id == node.id]
+        if len(node_list) == 0:
+            return node_list
+        node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
+        node.children = node_list
+        for item in node_list:
+            cls._node_recursion(data_list=data_list,node=item,order_by=order_by,reverse=reverse)
+        
 BaseResponseBody.model_rebuild() 
+Tree.model_rebuild()

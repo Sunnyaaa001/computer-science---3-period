@@ -18,6 +18,9 @@ class ErrorCode(Enum):
     NOT_UNIQUE_CATEGORY_NAME = (500,"This category name has already exist!")
     CATEGORY_NOT_FOUND = (500,"This category not found!")
     CATEGORY_PARENT_NOT_FOUND = (500,"parent doesn't exist!")
+    SUB_CATEGORY_EXIST = (500,"This category has sub categories!")
+    SUB_API_EXIST = (500,"This category has API!")
+    CATEGORY_NAME_EXIST = (500, "This category name has already exist!")
 
     def __init__(self, code, msg):
         self.code = code
