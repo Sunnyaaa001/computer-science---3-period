@@ -1,5 +1,6 @@
 from common.db.base_model import Base,BigInteger,String,CHAR,Mapped,mapped_column,Integer
-
+from sqlalchemy.dialects.mysql import JSON
+from typing import Any,Optional
 
 class APIInfo(Base):
     __tablename__ = "api_info"
@@ -11,3 +12,35 @@ class APIInfo(Base):
     api_method:Mapped[str] = mapped_column("api_method",String,nullable=False)
     status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="1")
     creator:Mapped[int] = mapped_column("creator",BigInteger,nullable=False)
+
+class APIParamInfo(Base):
+    __tablename__ = "api_param_info"
+
+    api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
+    paramter_name:Mapped[str] = mapped_column("paramter_name",String,nullable=False)
+    type:Mapped[str] = mapped_column("type",CHAR,nullable=False)
+    data_type:Mapped[str] = mapped_column("data_type",String,nullable=False)
+    is_required:Mapped[str] = mapped_column("is_required",String,nullable=False)
+
+class APIPluginInfo(Base):
+    __tablename__ = "api_plugin_info"
+
+    api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
+    is_limated:Mapped[str] = mapped_column("is_limited",CHAR,nullable=False)
+    ip_control:Mapped[str] = mapped_column("ip_control",CHAR,nullable=False)
+    is_user_limated:Mapped[str] = mapped_column("is_user_limated",CHAR,nullable=False)
+
+class APIResponsePropertyInfo(Base):
+    __tablename__ = "api_response_property_info"
+
+    api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
+    parent_id:Mapped[int] = mapped_column("parent_id",BigInteger,nullable=False)
+    property_name:Mapped[str] = mapped_column("property_name",String,nullable=False)
+    data_type:Mapped[str] = mapped_column("data_typr",String,nullable=False)
+    example:Mapped[str] = mapped_column("example",String,nullable=False)
+
+class APIResponseExample(Base):
+    __tablename__ = "api_response_examples"
+
+    api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
+    json_examples:Mapped[Optional[dict[str,Any]]] = mapped_column("json_examples",JSON,nullable=True)
