@@ -64,3 +64,6 @@ coverage.xml
 
 # Windows
 Thumbs.db
+
+# java
+**/target/

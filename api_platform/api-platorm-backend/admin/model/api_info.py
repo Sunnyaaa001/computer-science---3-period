@@ -10,6 +10,9 @@ class APIInfo(Base):
     api_host:Mapped[str] = mapped_column("api_host",String,nullable=False)
     api_port:Mapped[int] = mapped_column("api_port",Integer,nullable=False)
     api_method:Mapped[str] = mapped_column("api_method",String,nullable=False)
+    api_path:Mapped[str] = mapped_column("api_path",String,nullable=False)
+    endpoint:Mapped[str] = mapped_column("endpoint",String,nullable=True)
+    is_https:Mapped[str] = mapped_column("is_https",String,nullable=False)
     status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="1")
     creator:Mapped[int] = mapped_column("creator",BigInteger,nullable=False)
 
@@ -26,9 +29,9 @@ class APIPluginInfo(Base):
     __tablename__ = "api_plugin_info"
 
     api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
-    is_limated:Mapped[str] = mapped_column("is_limited",CHAR,nullable=False)
+    is_limited:Mapped[str] = mapped_column("is_limited",CHAR,nullable=False)
     ip_control:Mapped[str] = mapped_column("ip_control",CHAR,nullable=False)
-    is_user_limated:Mapped[str] = mapped_column("is_user_limated",CHAR,nullable=False)
+    is_user_limited:Mapped[str] = mapped_column("is_user_limited",CHAR,nullable=False)
 
 class APIResponsePropertyInfo(Base):
     __tablename__ = "api_response_property_info"
@@ -36,7 +39,7 @@ class APIResponsePropertyInfo(Base):
     api_id:Mapped[int] = mapped_column("api_id",BigInteger,nullable=False)
     parent_id:Mapped[int] = mapped_column("parent_id",BigInteger,nullable=False)
     property_name:Mapped[str] = mapped_column("property_name",String,nullable=False)
-    data_type:Mapped[str] = mapped_column("data_typr",String,nullable=False)
+    data_type:Mapped[str] = mapped_column("data_type",String,nullable=False)
     example:Mapped[str] = mapped_column("example",String,nullable=False)
 
 class APIResponseExample(Base):

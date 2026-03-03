@@ -22,6 +22,12 @@ class ErrorCode(Enum):
     SUB_API_EXIST = (500,"This category has API!")
     CATEGORY_NAME_EXIST = (500, "This category name has already exist!")
 
+    """
+    api info error code
+    """
+    API_NAME_EXIST = (500,"This api name has already exists!")
+    API_EXIST = (500,"This api has already exists!")
+
     def __init__(self, code, msg):
         self.code = code
         self.msg = msg

@@ -3,12 +3,13 @@ from fastapi.routing import APIRouter
 from fastapi import Depends
 from common.response.response_body import ResponseResult
 from admin.request.api_info_request import APIInfoParam
+from admin.service.api_info_service import insert_api
 
 router = APIRouter(prefix="/api/info")
 
 @router.post("/insert")
 async def insert_api_info(param:APIInfoParam)->ResponseResult:
-    ...
+    return await insert_api(param=param)
 
 @router.get("/{id}")
 async def api_info(id:int,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:
