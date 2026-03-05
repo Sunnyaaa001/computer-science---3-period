@@ -27,6 +27,7 @@ class ErrorCode(Enum):
     """
     API_NAME_EXIST = (500,"This api name has already exists!")
     API_EXIST = (500,"This api has already exists!")
+    API_MOT_EXIST = (500,"This API doesn't exist!")
 
     def __init__(self, code, msg):
         self.code = code

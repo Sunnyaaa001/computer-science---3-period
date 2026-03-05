@@ -1,4 +1,4 @@
-from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column
+from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column,relationship
 from sqlalchemy import BigInteger,DateTime,func,String,CHAR,Float,Text,inspect,Integer
 from datetime import datetime
 from common.id_generator.id_util import Snowflake

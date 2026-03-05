@@ -1,4 +1,4 @@
-from common.db.base_model import Base,BigInteger,String,CHAR,Mapped,mapped_column,Integer
+from common.db.base_model import Base,BigInteger,String,CHAR,Mapped,mapped_column,Integer,relationship
 from sqlalchemy.dialects.mysql import JSON
 from typing import Any,Optional
 
@@ -15,6 +15,41 @@ class APIInfo(Base):
     is_https:Mapped[str] = mapped_column("is_https",String,nullable=False)
     status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="1")
     creator:Mapped[int] = mapped_column("creator",BigInteger,nullable=False)
+
+    params = relationship(
+        "APIParamInfo",
+        primaryjoin="APIInfo.id == APIParamInfo.api_id",
+        foreign_keys="APIParamInfo.api_id",
+        lazy= "selectin",
+        viewonly=True
+    )
+
+    plugins = relationship(
+        "APIPluginInfo",
+        primaryjoin= "APIInfo.id == APIPluginInfo.api_id",
+        foreign_keys="APIPluginInfo.api_id",
+        lazy="joined",
+        uselist=False,
+        viewonly=True
+    )
+
+    response_examples = relationship(
+        "APIResponseExample",
+        primaryjoin="APIInfo.id == APIResponseExample.api_id",
+        foreign_keys="APIResponseExample.api_id",
+        lazy="joined",
+        uselist=False,
+        viewonly=True
+    )
+    
+    response_properties = relationship(
+        "APIResponsePropertyInfo",
+        primaryjoin="APIInfo.id == APIResponsePropertyInfo.api_id",
+        foreign_keys="APIResponsePropertyInfo.api_id",
+        lazy="selectin",
+        uselist=True, 
+        viewonly=True
+    )    
 
 class APIParamInfo(Base):
     __tablename__ = "api_param_info"

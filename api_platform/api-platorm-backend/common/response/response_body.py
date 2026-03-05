@@ -79,7 +79,8 @@ async def paginate(db:AsyncSession,
              page: int = 1,
              size: int = 10,
              filters: Callable[[Type], list] | None = None,
-             order_by=None
+             order_by=None,
+             options: list | None = None
              ) ->PageResult[T]:
     query = select(model)
 
@@ -88,12 +89,15 @@ async def paginate(db:AsyncSession,
         if condition:
             query = query.where(*condition)
 
+    if options is not None:
+       query =  query.options(*options)
+
     if order_by:
-        query.order_by(order_by)
+       query = query.order_by(order_by)
 
     total = await db.scalar(select(func.count()).select_from(model))
     offset = (page - 1) * size
-    rows = await db.scalars(query.offset(offset).limit(size)).all()
+    rows = (await db.scalars(query.offset(offset).limit(size))).all()
     items = [response_model.model_validate(r) for r in rows]
     return PageResult[T](
         total=total,
@@ -110,7 +114,8 @@ class Tree(BaseResponseBody,Generic[NODE]):
     def build_tree(cls:Type[NODE],data:list[NODE],root_id:Any=0,order_by:str="sort",reverse:bool=False)->list[NODE]:
         node_list = [item for item in data if item.parent_id == root_id]
         if len(node_list) != 0:
-            node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
+            if order_by is not None:
+                node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
             for item in node_list:
                 cls._node_recursion(data_list=data,node=item,order_by=order_by,reverse=reverse)
         return node_list
@@ -120,7 +125,8 @@ class Tree(BaseResponseBody,Generic[NODE]):
         node_list = [item for item in data_list if item.parent_id == node.id]
         if len(node_list) == 0:
             return node_list
-        node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
+        if order_by is not None:
+            node_list.sort(key= lambda x:getattr(x,order_by,0),reverse=reverse)
         node.children = node_list
         for item in node_list:
             cls._node_recursion(data_list=data_list,node=item,order_by=order_by,reverse=reverse)
