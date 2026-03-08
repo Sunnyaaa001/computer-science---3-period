@@ -12,10 +12,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 @Component
@@ -43,12 +46,12 @@ public class ApiFilter extends OncePerRequestFilter {
             return;
         }
         ResponseResult result = ResponseResult.fail(401, "Invalid Token, Please login again!");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         // check token
         token = token.substring(7);
         if (!tokenUtil.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             objectMapper.writeValue(response.getWriter(), result);
             return;
         }
@@ -56,6 +59,7 @@ public class ApiFilter extends OncePerRequestFilter {
         Map<String, Object> payload = tokenUtil.parseToken(token);
         String key = tokenRedisFolder + ":" + payload.get("id").toString();
         if(!redisUtil.check_exist(key)){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             objectMapper.writeValue(response.getWriter(), result);
             return;
         }
@@ -63,11 +67,13 @@ public class ApiFilter extends OncePerRequestFilter {
         redisUtil.set(key,userInfo,tokenTime);
         // put current user into SecurityHolderContext
         Map<String, Object> userMap = BeanUtil.beanToMap(userInfo);
+        userMap.remove("password");
         UserInfoUtil.setCurrentUserInfo(userMap);
-        try {
-            filterChain.doFilter(request, response);
-        }finally {
-            UserInfoUtil.cleanUserInfo();
-        }
+        // tell spring security framework this api has been authenticated
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userMap
+                , null,
+                Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        filterChain.doFilter(request, response);
     }
 }

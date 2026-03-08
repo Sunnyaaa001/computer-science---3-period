@@ -43,3 +43,15 @@ token:
   secretKey: p7vNf2kR8yGqV1XcT0uL9hW4J6bS3dZ7F1qA5mR2oP8yC0xN
   redisFolder: token_client_user
   time: 1800
+
+
+langchain4j:
+  ollama:
+    chat-model:
+      base-url: http://localhost:11434
+      model-name: llama3.2
+      temperature: 0.3
+      timeout: PT60S
+      max-retries: 3
+      log-requests: true
+      log-responses: true

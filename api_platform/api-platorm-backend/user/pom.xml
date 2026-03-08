@@ -35,6 +35,7 @@
         <hutool.version>5.8.43</hutool.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <langchain4j.version>0.36.2</langchain4j.version>
     </properties>
 
     <dependencyManagement>
@@ -74,6 +75,17 @@
                 <optional>true</optional>
             </dependency>
 
+                <dependency>
+                    <groupId>dev.langchain4j</groupId>
+                    <artifactId>langchain4j-ollama-spring-boot-starter</artifactId>
+                    <version>${langchain4j.version}</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>dev.langchain4j</groupId>
+                    <artifactId>langchain4j-spring-boot-starter</artifactId>
+                    <version>${langchain4j.version}</version>
+                </dependency>
 
             <dependency>
                 <groupId>cn.hutool</groupId>
