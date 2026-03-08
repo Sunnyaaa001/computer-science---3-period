@@ -7,6 +7,8 @@ import com.whs.apiplatform.ai.service.IntentClassifier;
 import com.whs.apiplatform.common.id.SnowflakeIdUtil;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.ollama.OllamaChatModel;
+import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
+import dev.langchain4j.model.ollama.OllamaStreamingLanguageModel;
 import dev.langchain4j.service.AiServices;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,17 +40,17 @@ public class AIConfig {
     }
 
     @Bean("chatAgent")
-    public IAIAgentService GeneralTopicAI(OllamaChatModel model) {
+    public IAIAgentService GeneralTopicAI(OllamaStreamingChatModel model) {
         return AiServices.builder(IAIAgentService.class)
-                .chatLanguageModel(model)
+                .streamingChatLanguageModel(model)
                 .chatMemoryProvider(memoryId-> new AIChattingHistoryServiceImpl(memoryId.toString(),chattingHistoryMapper,snowflakeIdUtil))
                 .build();
     }
 
     @Bean("toolAgent")
-    public IAIAgentService ToolsAIAssistant(OllamaChatModel model,APITool apiTool) {
+    public IAIAgentService ToolsAIAssistant(OllamaStreamingChatModel model,APITool apiTool) {
         return AiServices.builder(IAIAgentService.class)
-                .chatLanguageModel(model)
+                .streamingChatLanguageModel(model)
                 .tools(apiTool)
                 .chatMemoryProvider(memoryId-> new AIChattingHistoryServiceImpl(memoryId.toString(),chattingHistoryMapper,snowflakeIdUtil))
                 .build();

@@ -27,6 +27,10 @@ spring:
           max-active: 8
           max-wait: -1ms
 
+  threads:
+    virtual:
+      enabled: true
+
 mybatis:
   type-aliases-package: com.whs.**.domain
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -47,6 +51,14 @@ token:
 
 langchain4j:
   ollama:
+    streaming-chat-model:
+      base-url: http://localhost:11434
+      model-name: llama3.2
+      temperature: 0.3
+      timeout: PT60S
+      max-retries: 3
+      log-requests: true
+      log-responses: true
     chat-model:
       base-url: http://localhost:11434
       model-name: llama3.2
@@ -55,3 +67,4 @@ langchain4j:
       max-retries: 3
       log-requests: true
       log-responses: true
+
