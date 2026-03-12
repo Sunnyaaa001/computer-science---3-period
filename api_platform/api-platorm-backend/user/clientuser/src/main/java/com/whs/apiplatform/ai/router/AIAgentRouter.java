@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 import java.util.Date;
 import java.util.Map;
@@ -92,7 +93,7 @@ public class AIAgentRouter {
         return topicId;
     }
 
-    public SseEmitter chatStreaming(AIUserInputMessage userInputMessage) {
+    public Flux<String> chatStreaming(AIUserInputMessage userInputMessage) {
         // get current user
         Map<String,Object> userInfo =  UserInfoUtil.getCurrentUserInfo();
         Long userId = Long.parseLong(userInfo.get("id").toString());
@@ -103,27 +104,10 @@ public class AIAgentRouter {
         if(chatCategory == AIRouterEnum.TOOL && looksLikeNormalQuestion(message)){
             chatCategory = AIRouterEnum.CHAT;
         }
-        SseEmitter emitter = new SseEmitter(60000L);
         AIRouterEnum finalChatCategory = chatCategory;
-        executorService.submit(() -> {
-            try {
-                IAIAgentService selectedAgent = (finalChatCategory == AIRouterEnum.TOOL) ? toolAgent : chatAgent;
-
-                selectedAgent.chatStream(memoryId, message)
-                        .onNext(token -> {
-                            try {
-                                emitter.send(SseEmitter.event().data(token));
-                            } catch (Exception e) {
-                                emitter.completeWithError(e);
-                            }
-                        })
-                        .onComplete(response -> emitter.complete())
-                        .onError(emitter::completeWithError)
-                        .start();
-            } catch (Exception e) {
-                emitter.completeWithError(e);
-            }
-        });
-        return emitter;
+        if (finalChatCategory == AIRouterEnum.TOOL) {
+            return toolAgent.chatStream(memoryId,message);
+        }
+        return chatAgent.chatStream(memoryId,message);
     }
 }

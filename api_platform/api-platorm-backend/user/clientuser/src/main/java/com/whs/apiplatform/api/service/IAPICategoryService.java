@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IAPICategoryService {
 
-    public List<APICategory> categoryList(CategoryParam categoryParam);
+    public List<APICategory> categoryList(String categoryName);
 }

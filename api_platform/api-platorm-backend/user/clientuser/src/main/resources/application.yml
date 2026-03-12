@@ -38,6 +38,8 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     cache-enabled: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
 
 snowflake:
   workId: 1
@@ -53,7 +55,7 @@ langchain4j:
   ollama:
     streaming-chat-model:
       base-url: http://localhost:11434
-      model-name: llama3.2
+      model-name: qwen2.5:7b-instruct-q4_k_m
       temperature: 0.3
       timeout: PT60S
       max-retries: 3
@@ -61,7 +63,7 @@ langchain4j:
       log-responses: true
     chat-model:
       base-url: http://localhost:11434
-      model-name: llama3.2
+      model-name: qwen2.5:7b-instruct-q4_k_m
       temperature: 0.3
       timeout: PT60S
       max-retries: 3

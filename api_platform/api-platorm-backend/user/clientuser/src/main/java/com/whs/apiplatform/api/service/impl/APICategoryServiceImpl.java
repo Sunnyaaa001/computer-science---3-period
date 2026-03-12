@@ -16,7 +16,7 @@ public class APICategoryServiceImpl implements IAPICategoryService {
     private ApiCategoryMapper apiCategoryMapper;
 
     @Override
-    public List<APICategory> categoryList(CategoryParam categoryParam) {
-        return apiCategoryMapper.categoryList(categoryParam.categoryName());
+    public List<APICategory> categoryList(String categoryName) {
+        return apiCategoryMapper.categoryList(categoryName);
     }
 }

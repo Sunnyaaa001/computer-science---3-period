@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whs.apiplatform.api.mapper.APIInfoMapper">
+
+    <resultMap id="apiInfoResult" type="com.whs.apiplatform.api.response.ApiInfoResponse">
+        <result column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="api_name" property="apiName"/>
+        <result column="api_host" property="apiHost"/>
+        <result column="api_port" property="apiPort"/>
+        <result column="api_method" property="apiMethod"/>
+        <result column="api_path" property="apiPath"/>
+        <result column="endpoint" property="endpoint"/>
+        <result column="is_https" property="isHttps"/>
+        <result column="status" property="status"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <association property="examples" select="responseExampleInfo" column="id"/>
+        <association property="plugins" select="pluginInfo" column="id"/>
+        <collection property="params" select="paramList" column="id"/>
+        <collection property="properties" select="responsePropertiesList" column="id"/>
+    </resultMap>
+
+    <resultMap id="paramMap" type="com.whs.apiplatform.api.response.ApiParamResponse">
+        <result column="id" property="id"/>
+        <result column="api_id" property="apiId"/>
+        <result column="paramter_name" property="paramterName"/>
+        <result column="type" property="type"/>
+        <result column="data_type" property="dataType"/>
+        <result column="is_required" property="isRequired"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="pluginResult" type="com.whs.apiplatform.api.response.ApiPluginResponse">
+        <result column="id" property="id"/>
+        <result column="api_id" property="apiId"/>
+        <result column="is_limited" property="isLimited"/>
+        <result column="ip_control" property="apiId"/>
+        <result column="is_user_limited" property="isUserLimited"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="responsePropertiesResponse" type="com.whs.apiplatform.api.response.ApiResponsePropertyResponse">
+        <result column="id" property="id"/>
+        <result column="api_id" property="apiId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="property_name" property="propertyName"/>
+        <result column="data_type" property="dataType"/>
+        <result column="example" property="example"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="responseExampleResult" type="com.whs.apiplatform.api.response.ApiResponseExamplesResponse">
+        <result column="id" property="id"/>
+        <result column="api_id" property="apiId"/>
+        <result column="json_examples" property="jsonExamples"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="onlyInfoResult" type="com.whs.apiplatform.api.response.ApiInfoResponse">
+        <result column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="api_name" property="apiName"/>
+        <result column="api_host" property="apiHost"/>
+        <result column="api_port" property="apiPort"/>
+        <result column="api_method" property="apiMethod"/>
+        <result column="api_path" property="apiPath"/>
+        <result column="endpoint" property="endpoint"/>
+        <result column="is_https" property="isHttps"/>
+        <result column="status" property="status"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="apiInfo" resultMap="apiInfoResult">
+        select * from api_info where id = #{apiId}
+    </select>
+
+    <select id="paramList" resultMap="paramMap">
+        select * from api_param_info where api_id = #{id}
+    </select>
+
+    <select id="pluginInfo" resultMap="pluginResult" >
+        select * from api_plugin_info where api_id = #{id}
+    </select>
+
+    <select id="responsePropertiesList" resultMap="responsePropertiesResponse">
+        select * from api_response_property_info where api_id = #{id}
+    </select>
+
+    <select id="responseExampleInfo" resultMap="responseExampleResult">
+        select * from api_response_examples where api_id = #{id}
+    </select>
+    <select id="apiList" resultMap="onlyInfoResult">
+        select * from api_info
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{category_id}
+            </if>
+        </where>
+    </select>
+    <select id="selectApiListByCategoryName" resultMap="apiInfoResult">
+        select * from api_info
+        <where>
+            <if test="categoryName != null and categoryName != ''">
+                and category_id in (select id from api_category where category_name = #{categoryName})
+            </if>
+        </where>
+    </select>
+</mapper>

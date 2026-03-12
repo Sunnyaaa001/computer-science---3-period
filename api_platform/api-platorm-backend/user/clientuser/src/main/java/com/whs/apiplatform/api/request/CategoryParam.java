@@ -1,9 +1,9 @@
 package com.whs.apiplatform.api.request;
 
-import dev.langchain4j.model.output.structured.Description;
+import dev.langchain4j.agent.tool.P;
 
 public record CategoryParam(
-        @Description("API category name for API category name searching")
+        @P("category name")
         String categoryName
 ) {
 }

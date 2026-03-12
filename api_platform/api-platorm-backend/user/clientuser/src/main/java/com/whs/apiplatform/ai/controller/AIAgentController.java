@@ -1,13 +1,12 @@
 package com.whs.apiplatform.ai.controller;
 
-
 import com.whs.apiplatform.ai.request.AIUserInputMessage;
 import com.whs.apiplatform.ai.router.AIAgentRouter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/client/aiAgent")
@@ -22,7 +21,7 @@ public class AIAgentController {
 //    }
 
     @PostMapping(value = "/chat/streaming",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter chatStreaming(@RequestBody AIUserInputMessage message){
+    public Flux<String> chatStreaming(@RequestBody AIUserInputMessage message){
         return aiAgentRouter.chatStreaming(message);
     }
 }
