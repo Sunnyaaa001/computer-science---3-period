@@ -3,6 +3,7 @@ package com.whs.apiplatform.ai.tools;
 import com.whs.apiplatform.api.domain.APICategory;
 import com.whs.apiplatform.api.mapper.APIInfoMapper;
 import com.whs.apiplatform.api.request.CategoryParam;
+import com.whs.apiplatform.api.response.ApiCategoryResponse;
 import com.whs.apiplatform.api.response.ApiInfoResponse;
 import com.whs.apiplatform.api.service.IAPICategoryService;
 import dev.langchain4j.agent.tool.P;
@@ -22,7 +23,7 @@ public class APITool {
     private final APIInfoMapper apiInfoMapper;
 
     @Tool("select API category list, the param is category name.")
-    public List<APICategory> categoryList(@P("categoryName") String categoryName) {
+    public List<ApiCategoryResponse> categoryList(@P("categoryName") String categoryName) {
         return categoryService.categoryList(categoryName);
     }
 

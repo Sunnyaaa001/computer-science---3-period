@@ -110,7 +110,7 @@
         select * from api_info
         <where>
             <if test="categoryName != null and categoryName != ''">
-                and category_id in (select id from api_category where category_name = #{categoryName})
+                and category_id in (select id from api_category where category_name like concat('%',#{categoryName},'%') )
             </if>
         </where>
     </select>
