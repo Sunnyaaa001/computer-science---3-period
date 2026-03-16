@@ -1,6 +1,7 @@
 package com.whs.apiplatform.api.controller;
 
 
+import com.whs.apiplatform.api.request.APIRequestParam;
 import com.whs.apiplatform.api.response.ApiCategoryResponse;
 import com.whs.apiplatform.api.response.ApiInfoResponse;
 import com.whs.apiplatform.api.service.IAPICategoryService;
@@ -42,7 +43,7 @@ public class APIInfoController {
     }
 
     @PostMapping("/requestAPI")
-    public Map<String, Object> requestAPI(){
-        return null;
+    public Map<String, Object> requestAPI(@RequestBody APIRequestParam apiRequestParam){
+        return apiInfoService.requestApi(apiRequestParam);
     }
 }

@@ -9,7 +9,7 @@ export default defineComponent({
         const password = ref<string>("")
         const error = ref<string>("")
 
-        const handleLogin = async () =>{
+        const submitHandle = async () =>{
             if(!username.value || !password.value){
                 error.value = "Please enter username and password!"
                 return
@@ -18,12 +18,20 @@ export default defineComponent({
             try{
          // create LoginUser instance
          const loginUser = new LoginUser(username.value,password.value)
-         const response = await loginUser.login()
-         if(response.httpSatus != 200 || response.data.code != 200){
+         if(isLogin){
+            const response = await loginUser.login()
+            if(response.httpSatus != 200 || response.data.code != 200){
             error.value = response.data.message
             return
          }
          localStorage.setItem("Authorization",response.data.data.token)
+         }else{
+            const response = await loginUser.signUp()
+            if(response.httpsSatus != 200 || response.data.code != 200){
+            error.value = response.data.message
+            return
+         }
+         }
          //redirect to index.vue
         }catch(error:any){
             console.log("Login failed:",error)
@@ -31,6 +39,6 @@ export default defineComponent({
         }
         }
 
-        return {isLogin,username,password,error,handleLogin}
+        return {isLogin,username,password,error,submitHandle}
     }
 })

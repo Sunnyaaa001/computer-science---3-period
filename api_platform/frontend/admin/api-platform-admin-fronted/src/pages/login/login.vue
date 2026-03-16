@@ -4,7 +4,7 @@
     <div class="login-page">
         <div class="login-card">
             <h2>API platform</h2>
-            <form @submit.prevent = "handleLogin">
+            <form @submit.prevent = "submitHandle">
                 <div class="form-group">
                     <label>Username:
                         <input 
@@ -21,9 +21,9 @@
                        placeholder="please enter your password"/></label>
                     
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">{{isLogin? 'login':'sign up'}}</button>
                 <p class="sign-up-link" @click="isLogin = !isLogin">
-                    {{ isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login" }}
+                    {{ isLogin ? "Don't have an account? Sign up" : "Already have an account? Login" }}
                 </p>
                 <p v-if="error" class="error">{{ error }}</p>
             </form>

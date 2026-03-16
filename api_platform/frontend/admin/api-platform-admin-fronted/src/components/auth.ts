@@ -37,6 +37,19 @@ export class LoginUser {
         const data:LoginResponse = await response.json()
         return {httpSatus:response.status,data}
     }
+
+    async signUp():Promise<{httpsSatus:number,data:BasicResponse}> {
+        const response = await fetch("/system/user/register",{
+            method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({
+                 username:this.username,
+                 password:this.password
+            })
+        })
+        const data = await response.json()
+        return {httpsSatus:response.status,data}
+    }
 }
 
 interface LoginData{
