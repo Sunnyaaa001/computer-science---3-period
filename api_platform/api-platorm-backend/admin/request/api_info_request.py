@@ -19,7 +19,7 @@ class APIResponsePropertyParam(BaseModel):
     parent_id:Optional[int] = None
     property_name:str =Field(extra={"error_msg":"response property name is empty"})
     data_type:str = Field(extra={"error_msg":"data type of response property is empty"})
-    example:str
+    example:Optional[str] = None
     children:Optional[list["APIResponsePropertyParam"]] = None
 
 class APIParamReq(BaseModel):

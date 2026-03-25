@@ -44,6 +44,7 @@ public class HttpUtil {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
         return restClient.build()
                 .post()
+                .uri(builder.build().toUri())
                 .body(params)
                 .headers(httpHeaders -> {
                     if (headers != null) {

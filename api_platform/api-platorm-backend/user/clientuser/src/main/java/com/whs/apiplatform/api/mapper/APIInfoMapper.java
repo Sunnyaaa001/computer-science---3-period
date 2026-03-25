@@ -13,4 +13,6 @@ public interface APIInfoMapper {
     List<ApiInfoResponse> apiList(Long categoryId);
 
     List<ApiInfoResponse> selectApiListByCategoryName(String categoryName);
+
+    ApiInfoResponse apiInfoByName(String apiName);
 }

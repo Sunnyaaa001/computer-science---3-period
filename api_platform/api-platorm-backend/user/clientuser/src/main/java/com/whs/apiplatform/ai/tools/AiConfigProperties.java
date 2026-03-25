@@ -12,6 +12,7 @@ import java.time.Duration;
 public class AiConfigProperties {
     private ChatModelConfig chatModel;
     private StreamingChatModelConfig streamingChatModel;
+    private EmbeddingChatModelConfig embeddingChatModel;
 
     @Data
     public static class ChatModelConfig {
@@ -26,6 +27,17 @@ public class AiConfigProperties {
 
     @Data
     public static class StreamingChatModelConfig {
+        private String baseUrl;
+        private String modelName;
+        private Double temperature;
+        private Duration timeout;
+        private Integer maxRetries;
+        private Boolean logRequests;
+        private Boolean logResponses;
+    }
+
+    @Data
+    public static class EmbeddingChatModelConfig {
         private String baseUrl;
         private String modelName;
         private Double temperature;

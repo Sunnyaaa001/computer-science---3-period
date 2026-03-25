@@ -1,5 +1,6 @@
 import { defineComponent, ref } from "vue";
 import { LoginUser } from "@/components/auth";
+import router from "@/router/router";
 
 export default defineComponent({
     name:"Login",
@@ -14,7 +15,6 @@ export default defineComponent({
                 error.value = "Please enter username and password!"
                 return
             }
-
             try{
          // create LoginUser instance
          const loginUser = new LoginUser(username.value,password.value)
@@ -33,6 +33,7 @@ export default defineComponent({
          }
          }
          //redirect to index.vue
+         await router.push("/index")
         }catch(error:any){
             console.log("Login failed:",error)
             error.value = "login failed!"

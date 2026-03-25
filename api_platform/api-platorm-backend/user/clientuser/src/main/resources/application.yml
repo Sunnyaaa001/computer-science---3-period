@@ -69,4 +69,12 @@ langchain4j:
       max-retries: 3
       log-requests: true
       log-responses: true
+    embedding-chat-model:
+      base-url: http://localhost:11434
+      model-name: nomic-embed-text
+      temperature: 0.3
+      timeout: PT60S
+      max-retries: 3
+      log-requests: true
+      log-responses: true
 

@@ -4,7 +4,7 @@ export class LoginUser {
     private username:string
     private password:string
 
-    constructor(username:string,password:string){
+    constructor(username:string = "",password:string = ""){
         this.username=username
         this.password=password
     }
@@ -49,6 +49,19 @@ export class LoginUser {
         })
         const data = await response.json()
         return {httpsSatus:response.status,data}
+    }
+
+    async logout(token:string):Promise<{httpStatus:number,data:BasicResponse}> {
+        const response = await fetch(
+            "/system/user/logout",{
+                method:"GET",
+                headers:{
+                    "Authorization":token
+                }
+            }
+        );
+        const data = await response.json()
+        return {httpStatus:response.status,data:data}
     }
 }
 

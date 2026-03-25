@@ -114,4 +114,7 @@
             </if>
         </where>
     </select>
+    <select id="apiInfoByName" resultMap="apiInfoResult">
+        select * from api_info where api_name = #{apiName}
+    </select>
 </mapper>
