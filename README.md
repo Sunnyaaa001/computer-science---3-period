@@ -280,3 +280,7 @@ computer-science---3-period
 └─ README.md
 
 ```
+### Admin Application
+User can login this admin appliaction to register some APIs.
+### Client Application 
+User can login client user application to request these APIs
