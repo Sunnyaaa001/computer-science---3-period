@@ -1,2 +1,4 @@
 # computer-science---3-period
-## Python assignment
+## Python Assignment
+### Week 1 
+#### Tip caculator
