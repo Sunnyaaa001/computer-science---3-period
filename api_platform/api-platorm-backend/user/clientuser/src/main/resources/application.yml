@@ -12,7 +12,6 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 5
 
-
   data:
     redis:
       host: localhost
@@ -77,4 +76,3 @@ langchain4j:
       max-retries: 3
       log-requests: true
       log-responses: true
-

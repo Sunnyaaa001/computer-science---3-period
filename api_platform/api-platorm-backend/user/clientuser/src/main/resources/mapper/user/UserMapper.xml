@@ -8,6 +8,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="username != null and username != ''"> username,</if>
+            <if test="email != null and email != ''"> email,</if>
             <if test="password != null and password != ''"> password,</if>
             <if test="status != null and status != ''"> status,</if>
             <if test="createTime != null">create_time,</if>
@@ -17,16 +18,18 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="username != null and username != ''"> #{username},</if>
+            <if test="email != null and email != ''"> #{email},</if>
             <if test="password != null and password != ''"> #{password},</if>
             <if test="status != null and status != ''"> #{status},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
     </insert>
-    <select id="selectUserByUsername" resultType="com.whs.apiplatform.user.domain.UserInfo">
+    <select id="selectUserByUsername" resultType="com.whs.apiplatform.common.oauth.domain.UserInfo">
         select id as id,
                username as username,
                password as password,
+               email as email,
                status as status,
                avatar as avatar,
                create_time as createTime,

@@ -38,7 +38,7 @@ def file_change():
     people_image = Image.open(before_file)
     shirt_image = Image.open("./shirt.png")
     shirt_image = ImageOps.fit(shirt_image, people_image.size)
-    people_image.paste(shirt_image, (0,-100), shirt_image)
+    people_image.paste(shirt_image, (150,-150), shirt_image)
     people_image.save(after_file)
 
 def main():

@@ -2,11 +2,11 @@ package com.whs.apiplatform.user.service.impl;
 
 import com.whs.apiplatform.common.exceptions.BusinessException;
 import com.whs.apiplatform.common.id.SnowflakeIdUtil;
+import com.whs.apiplatform.common.oauth.domain.UserInfo;
 import com.whs.apiplatform.common.redis.RedisUtil;
 import com.whs.apiplatform.common.response.ResponseResult;
 import com.whs.apiplatform.common.token.TokenUtil;
 import com.whs.apiplatform.common.userinfo.UserInfoUtil;
-import com.whs.apiplatform.user.domain.UserInfo;
 import com.whs.apiplatform.user.mapper.UserMapper;
 import com.whs.apiplatform.user.request.LoginUser;
 import com.whs.apiplatform.user.request.RegisterUser;

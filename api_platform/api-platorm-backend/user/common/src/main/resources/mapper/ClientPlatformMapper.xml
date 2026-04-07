@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whs.apiplatform.common.oauth.mapper.ClientPlatformMapper">
+    <resultMap id="clientPlatformResult" type="com.whs.apiplatform.common.oauth.response.ClientPlatformResponse">
+        <result column="platform_name" property="platformName"/>
+        <result column="authorize_url" property="authorizeUrl"/>
+    </resultMap>
+
+
+    <insert id="insertUserInfo" parameterType="com.whs.apiplatform.common.oauth.domain.UserInfo">
+        insert into client_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null and username != ''"> username,</if>
+            <if test="email != null and email != ''"> email,</if>
+            <if test="password != null and password != ''"> password,</if>
+            <if test="status != null and status != ''"> status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="username != null and username != ''"> #{username},</if>
+            <if test="email != null and email != ''"> #{email},</if>
+            <if test="password != null and password != ''"> #{password},</if>
+            <if test="status != null and status != ''"> #{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+    <insert id="insertClientUserAuth" parameterType="clientUserAuth">
+        insert into client_user_auth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null"> user_id,</if>
+            <if test="platformType != null and platformType != ''"> platform_type,</if>
+            <if test="subId != null and subId != ''"> sub_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null"> #{userId},</if>
+            <if test="platformType != null and platformType != ''"> #{platformType},</if>
+            <if test="subId != null and subId != ''"> #{subId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <select id="selectAllClientPlatform" resultMap="clientPlatformResult">
+        select platform_name, authorized_redirected_url from client_social_platform
+    </select>
+    <select id="platformList" resultType="com.whs.apiplatform.common.oauth.domain.ClientPlatform">
+        select
+            id as id,
+            platform_name as platformName,
+            client_id as clientId,
+            client_secret as clientSecret,
+            scope as scope,
+            authorize_url as authorizeUrl,
+            username_attribute_name as usernameAttributeName,
+            authorized_redirected_url as authorizedRedirectUrl,
+            create_time as createTime,
+            update_time as updateTime
+            from
+            client_social_platform
+    </select>
+    <select id="findUserInfoByPlatform" resultType="com.whs.apiplatform.common.oauth.domain.UserInfo">
+        SELECT
+            cu.id as id,
+            cu.username as username,
+            cu.email as email
+        FROM
+            client_user AS cu
+                INNER JOIN client_user_auth AS cua on cu.id = cua.user_id
+        WHERE
+            (cua.platform_type = #{platformName}
+                AND
+             cua.sub_id = #{subId})
+           OR
+            cu.email = #{email}
+    </select>
+    <select id="getTargetUrl" resultType="java.lang.String">
+        select target_url as targetUrl from client_social_platform where platform_name = #{platformName}
+    </select>
+</mapper>

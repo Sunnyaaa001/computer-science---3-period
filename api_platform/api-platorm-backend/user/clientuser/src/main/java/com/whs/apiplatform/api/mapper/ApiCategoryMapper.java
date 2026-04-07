@@ -1,6 +1,5 @@
 package com.whs.apiplatform.api.mapper;
 
-import com.whs.apiplatform.api.domain.APICategory;
 import com.whs.apiplatform.api.response.ApiCategoryResponse;
 import org.apache.ibatis.annotations.Mapper;
 
