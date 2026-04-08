@@ -85,6 +85,9 @@ class Minesweeper():
                     if self.board[i][j]:
                         count += 1
 
+        if cell == self.lying_cell:
+                        count +=1 if count < 8 else count -1              
+
         return count
 
     def won(self):
@@ -166,7 +169,7 @@ class MinesweeperAI():
         self.safes = set()
 
         # List of sentences about the game known to be true
-        self.knowledge = []
+        self.knowledge: list[Sentence] = []
 
     def mark_mine(self, cell):
         """
@@ -186,7 +189,7 @@ class MinesweeperAI():
         for sentence in self.knowledge:
             sentence.mark_safe(cell)
 
-    def add_knowledge(self, cell, count):
+    def add_knowledge(self, cell:Minesweeper, count):
         # 1. Mark move and safe
         self.moves_made.add(cell)
         self.mark_safe(cell)
@@ -291,4 +294,4 @@ class MinesweeperAI():
         return None
 
     def handle_error(self,cell):
-        self.knowledge = [s for s in self.knowledge if s.source_cell != self.lying_cell]
+        self.knowledge = [s for s in self.knowledge if s.source_cell != cell]

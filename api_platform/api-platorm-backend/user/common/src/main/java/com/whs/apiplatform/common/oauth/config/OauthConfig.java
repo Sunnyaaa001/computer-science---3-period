@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,6 +41,6 @@ public class OauthConfig {
                 .clientSecret(clientPlatform.getClientSecret())
                 .redirectUri("{baseUrl}" + clientPlatform.getAuthorizedRedirectUrl())
                 .userNameAttributeName(clientPlatform.getUsernameAttributeName())
-                .scope(scopes).build();
+                .scope(Arrays.asList(scopes)).build();
     }
 }

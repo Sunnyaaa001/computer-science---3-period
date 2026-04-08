@@ -5,7 +5,6 @@ import com.whs.apiplatform.common.id.SnowflakeIdUtil;
 import com.whs.apiplatform.common.oauth.domain.UserInfo;
 import com.whs.apiplatform.common.oauth.service.OauthService;
 import com.whs.apiplatform.common.redis.RedisUtil;
-import com.whs.apiplatform.common.response.ResponseResult;
 import com.whs.apiplatform.common.token.TokenUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
