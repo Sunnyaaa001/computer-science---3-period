@@ -1,24 +1,31 @@
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.asyncio import AsyncIOExecutor
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
 from apscheduler.events import EVENT_JOB_ERROR,EVENT_JOB_EXECUTED
 from apscheduler.triggers.cron import CronTrigger
 from common.schedule.listener.task_listener import job_listener
+from common.db.session import DB
+from sqlalchemy import select
+from common.schedule.model.task_info import SysTaskInfo
 import threading
 from datetime import datetime
 
 class APScheduler:
-    _instance:BackgroundScheduler = None
+    _instance:AsyncIOScheduler = None
     _lock = threading.Lock()
     _started = False
      
     @staticmethod 
     def _create_scheduler(pool:int,coalesce:bool,max_instance:int,timezone:str):
-        executors = {"default": ThreadPoolExecutor(pool)}
+        executors = {
+            "default": AsyncIOExecutor(),
+            "threadpool": ThreadPoolExecutor(pool)
+            }
         job_default = {
             "coalesce": coalesce,
             "max_instances":max_instance
         }
-        return BackgroundScheduler(
+        return AsyncIOScheduler(
             executors = executors,
             job_defaults = job_default,
             timezone = timezone,
@@ -97,7 +104,24 @@ class APScheduler:
     @classmethod        
     def add_listener(cls):
         if cls._instance:
-            cls._instance.add_listener(job_listener,EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)        
+            cls._instance.add_listener(job_listener,EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
+
+    @classmethod
+    async def load_tasks(cls):
+        ## get task list from database
+       async for session in DB.get_session():
+           sql = (select(SysTaskInfo))
+           result = (await session.scalars(sql)).all()
+           for item in result:
+               task_dict = {
+                   "func_name":item.func_name,
+                   "trigger":item.cron_expression,
+                   "args":item.args,
+                   "kwargs":item.kwargs,
+                   "id":str(item.id)
+               }
+               cls.add_task(task_dict)
+                         
 
 
 

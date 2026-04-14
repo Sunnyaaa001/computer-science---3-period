@@ -3,10 +3,11 @@ from typing import List, Dict, Optional
 from datetime import datetime
 
 class TaskInfoParam(BaseModel):
-    id:int = Field(description="primary id")
+    id:Optional[int] = Field(None, description="primary id")
     task_name: str = Field(..., description="Name of the task")
     cron_expression: str = Field(..., description="Cron expression, e.g., '*/5 * * * *'")
     func_name: str = Field(..., description="Task execution function, format: module.func")
+    func_path: str = Field(..., description="Task execution function, format: module.func")
     args: Optional[List] = Field(default_factory=list, description="List of positional arguments")
     kwargs: Optional[Dict] = Field(default_factory=dict, description="Dictionary of keyword arguments")
     status: Optional[str] = Field(default='0', description="Task status: 0=stop, 1=pause, 2=run")

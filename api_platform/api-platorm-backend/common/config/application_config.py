@@ -39,6 +39,7 @@ def create_lifespan(module_name: str):
             coalesce=config_data["apscheduler"]["coalesce"],
             timezone=config_data["apscheduler"]["timezone"]
         )
+        await APScheduler.load_tasks()
         APScheduler.add_listener()
         APScheduler.start()
 

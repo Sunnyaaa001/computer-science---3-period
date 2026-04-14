@@ -13,8 +13,8 @@ from common.schedule.response_body.task_response import TaskResponse
 router = APIRouter(prefix="/schedule/task")
 
 @router.post("/insert")
-async def insert_task(task:TaskInfoParam,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:
-    return await insert_schedule_data(task,db)
+async def insert_task(task:TaskInfoParam) -> ResponseResult:
+    return await insert_schedule_data(task)
 
 @router.get("/list")
 async def select_task_pages(page:int,size:int,task:TaskInfoParam,db:AsyncSession = Depends(DB.get_session)) ->PageResult[TaskResponse]:
@@ -28,13 +28,13 @@ async def get_task_details(id:int,db:AsyncSession = Depends(DB.get_session)) ->R
     return ResponseResult.success(data=result,message="success!")
 
 @router.put("/update")
-async def update_task_info(task:TaskInfoParam,db:AsyncSession = Depends(DB.get_session))->ResponseResult:
-    return await update_task(task,db)
+async def update_task_info(task:TaskInfoParam)->ResponseResult:
+    return await update_task(task)
 
 
 @router.delete("/delete/{id}")
-async def delete_task_info(id:int,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:
-    return await delete_task(id,db)
+async def delete_task_info(id:int) -> ResponseResult:
+    return await delete_task(id)
 
 @router.get("/start/{id}")
 async def start_task(id:int,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:

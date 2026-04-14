@@ -27,9 +27,9 @@ async def event_process(event:JobExecutionEvent):
 
 
 @Transactional
-async def save_task_log(job_id:int,status:str,error:str,result:str,start_time:datetime,session:AsyncSession):
+async def save_task_log(job_id:int,status:str,error:str,result:str,start_time:datetime,db:AsyncSession):
     end_time = datetime.now()
-    duration = (end_time - start_time).total_seconds()
+    duration = int(end_time.timestamp()*1000 - start_time.timestamp()*1000)
     log = SysTaskLog(
         task_id = job_id,
         status = status,
@@ -39,4 +39,4 @@ async def save_task_log(job_id:int,status:str,error:str,result:str,start_time:da
         result = result,
         error = error
     )
-    session.add(log)
+    db.add(log)

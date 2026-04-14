@@ -6,3 +6,10 @@ class SysUser(Base):
     password:Mapped[str] = mapped_column("password",String,nullable=False)
     avatar:Mapped[str] = mapped_column("avatar",Text)
     status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="0")
+
+class ClientUser(Base):
+    __tablename__ = "client_user"
+    username:Mapped[str] = mapped_column("username",String,nullable=False)
+    email:Mapped[str] = mapped_column("email",String,nullable=False)
+    avatar:Mapped[str] = mapped_column("avatar",Text)
+    status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="0")

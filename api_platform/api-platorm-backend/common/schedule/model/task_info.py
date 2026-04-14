@@ -1,4 +1,4 @@
-from common.db.base_model import Base,Mapped,mapped_column,String,CHAR,datetime,DateTime,func,BigInteger,Float,Text
+from common.db.base_model import Base,Mapped,mapped_column,String,CHAR,datetime,DateTime,func,BigInteger,Float,Text,JSON
 
 class SysTaskInfo(Base):
     __tablename__ = "sys_task_info"
@@ -7,11 +7,11 @@ class SysTaskInfo(Base):
     func_name:Mapped[str] = mapped_column("func_name",String,nullable=False)
     func_path:Mapped[str] = mapped_column("func_path",Text,nullable=False)
     cron_expression:Mapped[str] = mapped_column("cron_expression",String,nullable=False)
-    args:Mapped[str] = mapped_column("args",String)
-    kwargs:Mapped[str] = mapped_column("kwargs",String)
+    args:Mapped[str] = mapped_column("args",JSON)
+    kwargs:Mapped[str] = mapped_column("kwargs",JSON)
     status:Mapped[str] = mapped_column("status",CHAR,nullable=False,default="0")
-    last_run_time:Mapped[datetime] = mapped_column("last_run_time",DateTime,nullable=False,default=func.now())
-    next_run_time:Mapped[datetime] = mapped_column("next_run_time",DateTime,nullable=False,default=func.now())
+    last_run_time:Mapped[datetime] = mapped_column("last_run_time",DateTime,nullable=False)
+    next_run_time:Mapped[datetime] = mapped_column("next_run_time",DateTime,nullable=False)
 
 
 class SysTaskLog(Base):
