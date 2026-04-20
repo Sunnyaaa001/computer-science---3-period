@@ -2,7 +2,14 @@ server:
   port: 8081
 
 
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      resolve-lazily: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/api_platform?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Europe/Amsterdam&allowPublicKeyRetrieval=true&useSSL=false
@@ -76,3 +83,9 @@ langchain4j:
       max-retries: 3
       log-requests: true
       log-responses: true
+
+
+oss:
+  endpoint: http://localhost:9000
+  accessKey: y2RANyQKdvYlnaO8uN4M
+  secretKey: xVN5Scn6o6U6lq9269Onilfq8PMrAtnX2fI6R5Aa

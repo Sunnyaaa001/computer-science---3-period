@@ -1,4 +1,5 @@
 from common.db.session import AsyncSession
+from apscheduler.triggers.cron import CronTrigger
 from common.schedule.request_body.request_param import TaskInfoParam
 from common.response.response_body import ResponseResult,paginate
 from common.schedule.model.task_info import SysTaskInfo
@@ -7,6 +8,7 @@ from sqlalchemy import select
 from common.exception.base.base_exception import BusinessException
 from common.schedule.response_body.task_response import TaskResponse
 from common.schedule.scheduler.ap_scheduler import APScheduler
+import datetime
 
 @Transactional
 async def insert_schedule_data(task:TaskInfoParam,db:AsyncSession)->ResponseResult:
@@ -16,6 +18,9 @@ async def insert_schedule_data(task:TaskInfoParam,db:AsyncSession)->ResponseResu
     if taskInfo is not None:
         raise BusinessException("This function already exists!")
     sys_task_info = SysTaskInfo(**param_data)
+    trigger = CronTrigger.from_crontab(sys_task_info.cron_expression)
+    next_run_time =  trigger.get_next_fire_time(None,datetime.datetime.now())
+    sys_task_info.next_run_time = next_run_time
     db.add(sys_task_info)
     return ResponseResult.success()
 

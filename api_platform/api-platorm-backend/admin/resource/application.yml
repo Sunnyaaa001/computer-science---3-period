@@ -32,7 +32,7 @@ apscheduler:
   max_instance: 1
   timezone: Europe/Amsterdam
 
-minio:
+aws:
   endpoint: http://localhost:9000
   access_key: y2RANyQKdvYlnaO8uN4M
   secret_key: xVN5Scn6o6U6lq9269Onilfq8PMrAtnX2fI6R5Aa

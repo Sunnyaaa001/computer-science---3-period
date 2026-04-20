@@ -41,8 +41,8 @@ async def start_task(id:int,db:AsyncSession = Depends(DB.get_session)) -> Respon
     return await start(id,db)
  
 @router.get("/stop/{id}")
-async def stop_task(id:int,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:
-    return await stop()
+async def stop_task(id:int) -> ResponseResult:
+    return await stop(id)
 
 @router.get("/execute/once/{id}")
 async def execute_once(id:int,db:AsyncSession = Depends(DB.get_session)) -> ResponseResult:

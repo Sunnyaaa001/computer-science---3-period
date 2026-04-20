@@ -2,7 +2,10 @@ from apscheduler.events import JobExecutionEvent
 from common.schedule.enum.task_enum import TaskRunningStatus
 from datetime import datetime
 from common.docerator.docerator import Transactional
+from common.schedule.model.task_info import SysTaskInfo
 import traceback
+from sqlalchemy import select
+from apscheduler.triggers.cron import CronTrigger
 from common.schedule.model.task_info import SysTaskLog
 from common.db.session import AsyncSession
 import asyncio
@@ -40,3 +43,11 @@ async def save_task_log(job_id:int,status:str,error:str,result:str,start_time:da
         error = error
     )
     db.add(log)
+    # update last_run_time and next_run_time
+    sys_task_info = await db.scalar(select(SysTaskInfo).where(SysTaskInfo.id == job_id))
+    last_run_time = sys_task_info.next_run_time
+    sys_task_info.last_run_time = last_run_time
+    trigger = CronTrigger.from_crontab(sys_task_info.cron_expression)
+    next_run_time = trigger.get_next_fire_time(None,datetime.now())
+    sys_task_info.next_run_time = next_run_time
+

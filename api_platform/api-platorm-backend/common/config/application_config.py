@@ -48,9 +48,9 @@ def create_lifespan(module_name: str):
         APScheduler.start()
         # init OSS client
         OSSStorage.init(
-            endpoint=config_data["minio"]["endpoint"],
-            access_key=config_data["minio"]["access_key"],
-            secret_key=config_data["minio"]["secret_key"]
+            endpoint=config_data["aws"]["endpoint"],
+            access_key=config_data["aws"]["access_key"],
+            secret_key=config_data["aws"]["secret_key"]
         )
         print(f"{config_data['app']['name']} application started........")
 

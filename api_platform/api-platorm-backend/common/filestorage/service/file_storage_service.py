@@ -29,3 +29,7 @@ async def download_file(bucket_name:str,file_path:str)->StreamingResponse:
             "Content-Disposition": f"attachment; filename={encoded_file_name}; filename*=utf-8''{encoded_file_name}"
         }
     )
+
+async def delete_file(bucket_name:str,file_path:str):
+    OSSStorage.delete_file(bucket_name=bucket_name,file_path=file_path)
+

@@ -8,3 +8,4 @@ class TaskRunningStatus(str,Enum):
 class TaskStatus(str,Enum):
     RUNNING = "2"
     STOP = "0"
+    PAUSE = "1"

@@ -64,3 +64,8 @@ class OSSStorage:
             Key=file_path
         )
         return response
+    
+
+    def delete_file(cls,bucket_name:str,file_path):
+        client = cls._instance
+        client.delete_object(Bucket=bucket_name,Key=file_path)

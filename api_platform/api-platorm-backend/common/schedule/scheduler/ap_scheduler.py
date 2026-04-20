@@ -110,7 +110,7 @@ class APScheduler:
     async def load_tasks(cls):
         ## get task list from database
        async for session in DB.get_session():
-           sql = (select(SysTaskInfo))
+           sql = (select(SysTaskInfo).where(SysTaskInfo.status == ))
            result = (await session.scalars(sql)).all()
            for item in result:
                task_dict = {

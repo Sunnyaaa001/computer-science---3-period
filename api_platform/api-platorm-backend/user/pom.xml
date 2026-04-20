@@ -39,6 +39,7 @@
         <langchain4j.springboot.starter.version>1.0.0-alpha1</langchain4j.springboot.starter.version>
         <lanchain4j.flux.version>1.0.0-alpha1</lanchain4j.flux.version>
         <langchain4j.redis.version>1.0.0-alpha1</langchain4j.redis.version>
+        <awss3.version>2.42.34</awss3.version>
     </properties>
 
     <dependencyManagement>
@@ -129,6 +130,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>s3</artifactId>
+                <version>${awss3.version}</version>
                 <scope>compile</scope>
             </dependency>
         </dependencies>

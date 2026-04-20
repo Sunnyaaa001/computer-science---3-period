@@ -1,7 +1,7 @@
 from fastapi import APIRouter,UploadFile, File, Form
 from common.response.response_body import ResponseResult
 from typing import Optional
-from common.filestorage.service.file_storage_service import file_upload,download_file,preview_file
+from common.filestorage.service.file_storage_service import file_upload,download_file,preview_file,delete_file
 from fastapi.responses import StreamingResponse
 
 router = APIRouter(prefix="/oss")
@@ -21,3 +21,9 @@ async def preview_url(bucket_name:str,file_path:str)->ResponseResult:
 @router.get("/download")
 async def download(bucket_name:str,file_path:str)->StreamingResponse:
     return await download_file(bucket_name=bucket_name,file_path=file_path)
+
+
+@router.delete("/delete")
+async def delete(bucket_name:str,file_path:str)->ResponseResult:
+    await delete_file(bucket_name=bucket_name,file_path=file_path)
+    return ResponseResult.success()
